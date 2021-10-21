@@ -26,15 +26,15 @@ Simple service to store users' documents
 * Idempotency. 
 
 ### Analysis
-Entities
-* User
-  * ID
-  * ...
 * Document
   * ID
+  * created
+  * deleted
   * user_id
   * name
+  * relative_file_path
   * type
+  * notes
   * ...
 
 Initial thoughts
@@ -49,4 +49,5 @@ Initial thoughts
 
 ### Development time
 * 2021-10-20: analysis, project structure (30m).
+* 2021-10-21: model (1h).
 
