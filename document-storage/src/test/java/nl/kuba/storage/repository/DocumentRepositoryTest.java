@@ -32,16 +32,9 @@ public class DocumentRepositoryTest {
     }
 
     @Test
-    public void findByName() {
-        final List<Document> foundByName = repository.findByName(document.getName());
+    public void findByUserIdAndName() {
+        final List<Document> foundByName = repository.findByUserIdAndName(document.getUserId(), document.getName());
         assertEquals(1, foundByName.size());
         assertEquals(document.getName(), foundByName.get(0).getName());
-    }
-
-    @Test
-    public void findByType() {
-        final List<Document> foundByType = repository.findByType(document.getType());
-        assertEquals(2, foundByType.size());
-        assertEquals(document.getType(), foundByType.get(0).getType());
     }
 }

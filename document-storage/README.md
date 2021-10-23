@@ -47,8 +47,16 @@ Initial thoughts
 * No deletes, only updates. 
 * Option to remove all personal data, while keeping the database structure. 
 
+### What is not implemented
+* Default page ("/"). 
+* Error pages (400, 500).
+* Authentication (e.g. CAS, OAuth2, ...). 
+  * A token can identify a user (userId) => then the endpoints do not need userId parameter. 
+* Procedure to remove all personal data while keeping database structure in tact (GDPR).
+* Encryption of the uploaded files. 
+
 ### Development time
 * 2021-10-20: analysis, project structure (30m).
 * 2021-10-21: model (1h).
-* 2021-10-23: repository, controller (3h).
+* 2021-10-23: repository, controller, REST API (4h).
 

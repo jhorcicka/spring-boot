@@ -9,26 +9,36 @@ import java.util.Date;
 import java.util.List;
 
 public interface DocumentRepository extends CrudRepository<Document, Long> {
-    /**
-     * @param name
-     * @return Documents matching the given name.
-     */
-    List<Document> findByName(final String name);
 
     /**
-     * @param type
-     * @return Documents matching the given type.
+     * @param userId
+     * @return Documents matching given userId.
      */
-    List<Document> findByType(final Document.Type type);
+    List<Document> findByUserId(final Long userId);
+
+    /**
+     * @param userId
+     * @param documentId
+     * @return Document matching given userId and documentId.
+     */
+    List<Document> findByUserIdAndId(final Long userId, final Long documentId);
+
+    /**
+     * @param userId
+     * @param name
+     * @return Documents matching the given userId and name.
+     */
+    List<Document> findByUserIdAndName(final Long userId, final String name);
 
     /**
      * For a document we allow to update its name and notes. ID, userId, type and path (content)
      * can't be updated. It's always possible to delete the old document and save a new one.
-     * @param id
+     * @param userId
+     * @param documentId
      * @param name
      * @param notes
      */
     @Modifying
-    @Query("update Document D set D.name = :name, D.notes = :notes where D.id = :id")
-    void updateDocumentById(final Long id, final String name, final String notes);
+    @Query("update Document D set D.name = :name, D.notes = :notes where D.userId = :userId and D.id = :documentId")
+    void updateUserDocument(final Long userId, final Long documentId, final String name, final String notes);
 }
