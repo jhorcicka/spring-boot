@@ -2,6 +2,7 @@ package nl.kuba.storage.controller;
 
 import nl.kuba.storage.model.Document;
 import nl.kuba.storage.repository.DocumentRepository;
+import nl.kuba.storage.service.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
-
-// todo:
-// file upload
 
 @Controller
 @RequestMapping(value = "/documents")
@@ -26,6 +26,9 @@ public class DocumentController {
 
   @Autowired
   private DocumentRepository repository;
+
+  @Autowired
+  private FileStorageService fileStorageService;
 
   @GetMapping(path = "/user/{userId}")
   public @ResponseBody
@@ -65,10 +68,27 @@ public class DocumentController {
     return ResponseEntity.created(uri).build();
   }
 
+  @PostMapping(path = "{documentId}/user/{userId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<String> uploadFile(@PathVariable final Long userId,
+                                           @PathVariable final Long documentId,
+                                           @RequestParam("file") final MultipartFile file) throws IOException {
+    LOGGER.debug("uploadFile: userId={}, documentName={}", userId, documentId);
+    final List<Document> documentList = repository.findByUserIdAndId(userId, documentId);
+    if (documentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Specified document was not found. ");
+    } else {
+      final Document document = documentList.get(0); // documentId is unique
+      final String newRelativePath = fileStorageService.store(file.getInputStream());
+      LOGGER.debug("newRelativePath: {}", newRelativePath);
+      repository.updateUserDocument(userId, documentId, file.getOriginalFilename(), newRelativePath, document.getNotes());
+      return ResponseEntity.ok().build();
+    }
+  }
+
   @PostMapping(path = "{documentId}/user/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> updateDocument(@PathVariable final Long documentId, @PathVariable final Long userId, @RequestBody final Document document) {
     LOGGER.debug("updateDocument: documentId={}, userId={}", documentId, userId);
-    repository.updateUserDocument(userId, document.getId(), document.getName(), document.getNotes());
+    repository.updateUserDocument(userId, documentId, document.getRelativeFilePath(), document.getName(), document.getNotes());
     return ResponseEntity.ok().build();
   }
 
