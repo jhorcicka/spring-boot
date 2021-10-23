@@ -1,73 +1,43 @@
 package nl.kuba.storage.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.Test;
 
 import java.util.Date;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
 
-class DocumentTest {
-    private static final Long ID = 1L;
-    private static final Long USER_ID = 100L;
-    private static final String NAME = "document-name-1";
-    private static final String RELATIVE_PATH = "document.pdf";
-    private static final Document.Type TYPE = Document.Type.PASSPORT;
-    private static final String NOTES = "testing document notes...";
+public class DocumentTest {
 
     @Test
-    void testFullBuilder() {
-        final Document document = Document
-                .builder()
-                .id(ID)
-                .created(new Date())
-                .userId(USER_ID)
-                .name(NAME)
-                .relativeFilePath(RELATIVE_PATH)
-                .type(TYPE)
-                .notes(NOTES)
-                .build();
-        assertEquals(ID, document.getId());
-        assertEquals(USER_ID, document.getUserId());
-        assertEquals(NAME, document.getName());
-        assertEquals(RELATIVE_PATH, document.getRelativeFilePath());
-        assertEquals(TYPE, document.getType());
-        assertEquals(NOTES, document.getNotes());
+    public void testFullBuilder() {
+        final Document document = DocumentFactory.createDocument();
+        assertEquals(DocumentFactory.ID, document.getId());
+        assertEquals(DocumentFactory.USER_ID, document.getUserId());
+        assertEquals(DocumentFactory.NAME, document.getName());
+        assertEquals(DocumentFactory.RELATIVE_PATH, document.getRelativeFilePath());
+        assertEquals(DocumentFactory.TYPE, document.getType());
+        assertEquals(DocumentFactory.NOTES, document.getNotes());
         assertNotNull(document.getCreated());
         assertNull(document.getDeleted());
     }
 
     @Test
-    void testBuilderWithDefaultValues() {
+    public void testBuilderWithDefaultValues() {
         final Document document = Document
                 .builder()
-                .userId(USER_ID)
-                .name(NAME)
-                .relativeFilePath(RELATIVE_PATH)
-                .type(TYPE)
-                .notes(NOTES)
+                .userId(DocumentFactory.USER_ID)
+                .name(DocumentFactory.NAME)
+                .relativeFilePath(DocumentFactory.RELATIVE_PATH)
+                .type(DocumentFactory.TYPE)
+                .notes(DocumentFactory.NOTES)
                 .build();
-        assertEquals(0L, document.getId());
-        assertEquals(USER_ID, document.getUserId());
-        assertEquals(NAME, document.getName());
-        assertEquals(RELATIVE_PATH, document.getRelativeFilePath());
-        assertEquals(TYPE, document.getType());
-        assertEquals(NOTES, document.getNotes());
+        assertEquals(new Long(0), document.getId());
+        assertEquals(DocumentFactory.USER_ID, document.getUserId());
+        assertEquals(DocumentFactory.NAME, document.getName());
+        assertEquals(DocumentFactory.RELATIVE_PATH, document.getRelativeFilePath());
+        assertEquals(DocumentFactory.TYPE, document.getType());
+        assertEquals(DocumentFactory.NOTES, document.getNotes());
         assertNotNull(document.getCreated());
         assertNull(document.getDeleted());
-    }
-
-    @Test
-    void testDeletion() {
-        final Document document = Document
-                .builder()
-                .id(ID)
-                .userId(USER_ID)
-                .build();
-        assertEquals(ID, document.getId());
-        assertNull(document.getDeleted());
-        document.delete();
-        assertNotNull(document.getDeleted());
     }
 }

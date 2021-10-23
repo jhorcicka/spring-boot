@@ -50,4 +50,5 @@ Initial thoughts
 ### Development time
 * 2021-10-20: analysis, project structure (30m).
 * 2021-10-21: model (1h).
+* 2021-10-23: repository, controller (8:20-).
 

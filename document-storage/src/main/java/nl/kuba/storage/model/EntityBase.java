@@ -10,23 +10,21 @@ import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
+@Getter
 @Entity
 public abstract class EntityBase {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Basic(optional=false)
-    @Column(name="id", insertable=true, updatable=false)
+    @Column(updatable=false)
     protected final Long id;
-    @Basic(optional=false)
-    @Column(name="created", insertable=true, updatable=false)
-    protected final Date created;
-    @Basic(optional=false)
-    @Column(name="deleted", insertable=true, updatable=true)
-    protected Date deleted;
 
-    public void delete() {
-        this.deleted = new Date();
-    }
+    @Basic(optional=false)
+    @Column(updatable=false)
+    protected final Date created;
+
+    @Column()
+    protected Date deleted;
 }
