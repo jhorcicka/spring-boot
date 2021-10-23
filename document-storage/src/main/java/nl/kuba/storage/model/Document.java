@@ -2,17 +2,25 @@ package nl.kuba.storage.model;
 
 import java.util.Date;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
+@ToString
 @Entity
-public class Document extends EntityBase {
+@Table(name = "Document")
+@SQLDelete(sql = "update Document D set D.deleted = CURRENT_TIMESTAMP where D.id = ?1")
+@Where(clause = "deleted is null")
+public class Document {
     /*
     Assumption:
-    The actual values do not change and we know them from the beginning.
+    The actual values do not change, and we know them from the beginning.
     If in reality this list changes frequently, an entity (database table) would probably be better.
     */
     public enum Type {
@@ -22,24 +30,21 @@ public class Document extends EntityBase {
         DRIVING_LICENSE,
     }
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Basic(optional=false)
+    @Column(updatable=false)
+    private Long id;
+
+    @Basic(optional=false)
+    @Column(updatable=false)
+    private Date created;
+
+    private Date deleted;
+
     private Long userId;
     private String name;
     private String relativeFilePath;
     private Type type;
     private String notes;
-
-    public Document() {
-        super(0L, new Date(), null);
-    }
-
-    @Builder
-    public Document(final Long id, final Date created, final Date deleted, final Long userId, final String name,
-            final String relativeFilePath, final Type type, final String notes) {
-        super(id == null ? 0L : id, created == null ? new Date() : created, deleted);
-        this.userId = userId;
-        this.name = name;
-        this.relativeFilePath = relativeFilePath;
-        this.type = type;
-        this.notes = notes;
-    }
 }
