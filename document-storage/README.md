@@ -63,5 +63,5 @@ Initial thoughts
 * 2021-10-20: analysis, project structure (30m).
 * 2021-10-21: model (1h).
 * 2021-10-23: repository, controller, REST API, file upload, file storage service (5h30m)
-* 2021-10-24: download, refactoring (45m).
+* 2021-10-24: download, refactoring, controller tests (2h).
 
