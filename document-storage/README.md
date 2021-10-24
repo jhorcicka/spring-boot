@@ -19,7 +19,6 @@ Simple service to store users' documents
   * Download a specific document. 
   * Update document metadata. 
   * Get all documents for non-existing user. 
-  * Remove all personal data for a specific user. 
 * Concurrency. 
 * Scalability.
 * Atomicity. 
@@ -64,4 +63,5 @@ Initial thoughts
 * 2021-10-20: analysis, project structure (30m).
 * 2021-10-21: model (1h).
 * 2021-10-23: repository, controller, REST API, file upload, file storage service (5h30m)
+* 2021-10-24: download, refactoring (45m).
 
