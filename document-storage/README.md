@@ -39,7 +39,7 @@ Simple service to store users' documents
 Initial thoughts
 * Spring Boot. 
 * H2 database.
-* For DEMO purpose, create a static set of users. 
+* For DEMO purpose, create a static set of users (not needed in the end).
 * Do not store binary documents in database. 
 * Use generated names for the stored files (paths are in database). 
 * Security (encryption). 
@@ -47,7 +47,7 @@ Initial thoughts
 * Option to remove all personal data, while keeping the database structure. 
 
 ### What is not implemented
-* Using permanent database.
+* Using permanent database (this can be changed via configuration).
 * Repository can return single document instead of list, then controller logic becomes easier. 
 * Default page ("/"). 
 * Error pages (400, 500).
@@ -56,12 +56,14 @@ Initial thoughts
 * Procedure to remove all personal data while keeping database structure in tact (GDPR).
 * Encryption of the uploaded files. 
 * DocumentRepository.updateUserDocument(document). Is there a way how to use object notation in the "sql"?
-* Check the file size (allow certain limit) and type (PDF, doc(x), jpg, ...).
+* Check the file size (allow a certain limit) and type (PDF, doc(x), jpg, ...).
 * Directory for file storage: checking its existence, structure based on year/month/day (for example).
+* Tests for all corner cases (all possible HTTP codes, all scenarios).
 
 ### Development time
 * 2021-10-20: analysis, project structure (30m).
 * 2021-10-21: model (1h).
 * 2021-10-23: repository, controller, REST API, file upload, file storage service (5h30m)
 * 2021-10-24: download, refactoring, controller tests (2h).
+* 2021-10-25: controller tests, finalizing (1h).
 
