@@ -55,12 +55,12 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void autowiredController() {
+    public void testAutowiredController() {
         assertNotNull(controller);
     }
 
     @Test
-    public void testCRUD() throws Exception {
+    public void basicCRUD() throws Exception {
         // get empty list
         final MvcResult getListResult1 = mvc.perform(get("/documents/user/" + USER_ID)).andExpect(status().isOk()).andReturn();
         assertEquals("[]", getListResult1.getResponse().getContentAsString());

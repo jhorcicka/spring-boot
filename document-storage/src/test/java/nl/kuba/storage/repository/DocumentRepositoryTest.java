@@ -1,7 +1,9 @@
 package nl.kuba.storage.repository;
 
-import nl.kuba.storage.model.Document;
-import nl.kuba.storage.model.DocumentFactory;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,12 +12,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import nl.kuba.storage.model.Document;
+import nl.kuba.storage.model.DocumentFactory;
 
-import static org.junit.Assert.*;
-
-@DataJpaTest
 @RunWith(SpringRunner.class)
+@DataJpaTest
+@SpringBootTest
 public class DocumentRepositoryTest {
     @Autowired
     private DocumentRepository repository;
