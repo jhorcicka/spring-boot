@@ -38,7 +38,7 @@ public class Application {
 
             // create users
             userRepository.save(new User("user", encoder.encode("user"), "ROLE_USER"));
-            userRepository.save(new User("admin", encoder.encode("admin"), "ROLE_USER,ROLE_ADMIN"));
+            userRepository.save(new User("admin", encoder.encode("admin"), "ROLE_ADMIN"));
             // fetch all users
             log.info("Users found with findAll():");
             log.info("-------------------------------");

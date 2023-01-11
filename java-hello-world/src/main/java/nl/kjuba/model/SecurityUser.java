@@ -2,6 +2,7 @@ package nl.kjuba.model;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -17,10 +18,9 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(user.getRoles()
-                .split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        final List<SimpleGrantedAuthority> roles =
+                Arrays.stream(user.getRoles().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return roles;
     }
 
     @Override
