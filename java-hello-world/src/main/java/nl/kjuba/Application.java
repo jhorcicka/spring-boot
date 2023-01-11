@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import nl.kjuba.model.Customer;
 import nl.kjuba.model.Product;
@@ -26,7 +28,8 @@ public class Application {
 
     @Bean
     public CommandLineRunner demo(final CustomerRepository customerRepository,
-            final ProductRepository productRepository, final UserRepository userRepository) {
+            final ProductRepository productRepository, final UserRepository userRepository,
+            final PasswordEncoder encoder) {
         return (args) -> {
             // delete all records
             productRepository.deleteAll();
@@ -34,8 +37,15 @@ public class Application {
             userRepository.deleteAll();
 
             // create users
-            userRepository.save(new User("user", "ROLE_USER"));
-            userRepository.save(new User("admin", "ROLE_USER,ROLE_ADMIN"));
+            userRepository.save(new User("user", encoder.encode("user"), "ROLE_USER"));
+            userRepository.save(new User("admin", encoder.encode("admin"), "ROLE_USER,ROLE_ADMIN"));
+            // fetch all users
+            log.info("Users found with findAll():");
+            log.info("-------------------------------");
+            for (User user: userRepository.findAll()) {
+                log.info(user.toString());
+            }
+            log.info("");
 
             // save a couple of customers
             Customer jack = new Customer("Jack", "Bauer");

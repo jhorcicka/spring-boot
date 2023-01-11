@@ -12,10 +12,15 @@ public class User {
     @GeneratedValue
     private Long id;
     private String username;
+    private String password;
     private String roles;
 
-    public User(final String username, final String roles) {
+    public User() {
+    }
+
+    public User(final String username, final String password, final String roles) {
         this.username = username;
+        this.password = password;
         this.roles = roles;
     }
 
@@ -33,6 +38,14 @@ public class User {
 
     public void setUsername(final String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     public String getRoles() {
