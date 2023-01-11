@@ -1,4 +1,4 @@
-package nl.kjuba;
+package nl.kjuba.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
