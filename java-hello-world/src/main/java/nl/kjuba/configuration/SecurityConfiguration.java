@@ -25,13 +25,16 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .userDetailsService(jpaUserDetailsService)
-            .httpBasic(withDefaults());
-        return http.build();
+        return http
+                .authorizeRequests()
+                .antMatchers("/web/user")
+                .access("hasRole('ROLE_USER')")
+                .antMatchers("/web/admin")
+                .access("hasRole('ROLE_ADMIN')")
+                .and()
+                .userDetailsService(jpaUserDetailsService)
+                .httpBasic(withDefaults())
+                .build();
     }
 
     @Bean
