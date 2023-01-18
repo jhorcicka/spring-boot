@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WebController {
 	@GetMapping(path="/")
 	public @ResponseBody String hello() {
-		return "hello universe!";
+		final StringBuilder html = new StringBuilder();
+		html.append("<form action=\"/logout\" method=\"post\"><button>logout</button></form>");
+		//html.append("<form action=\"/j_spring_security_logout\" method=\"post\"><button>logout2</button></form>");
+		return html.toString();
 	}
 
 	@GetMapping(path="/user")
