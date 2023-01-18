@@ -2,6 +2,7 @@ package nl.kjuba.configuration;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,11 +18,8 @@ import nl.kjuba.service.JpaUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final JpaUserDetailsService jpaUserDetailsService;
-
-    public SecurityConfiguration(final JpaUserDetailsService jpaUserDetailsService) {
-        this.jpaUserDetailsService = jpaUserDetailsService;
-    }
+    @Autowired
+    private JpaUserDetailsService jpaUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
