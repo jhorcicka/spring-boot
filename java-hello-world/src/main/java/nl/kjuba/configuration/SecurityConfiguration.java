@@ -3,6 +3,8 @@ package nl.kjuba.configuration;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -43,47 +46,22 @@ public class SecurityConfiguration {
                 .httpBasic(withDefaults())
                 .userDetailsService(jpaUserDetailsService)
                 .authorizeRequests()
-                .antMatchers("/web/user")
-                .access("hasRole('ROLE_USER')")
-                .antMatchers("/web/admin")
-                .access("hasRole('ROLE_ADMIN')")
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/web/user").access("hasRole('ROLE_USER')")
+                .antMatchers("/web/admin").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().authenticated()
                 .and()
-
-                /*
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/web/")
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/web/")
                 .addLogoutHandler((request, response, authentication) -> {
-                    authentication.setAuthenticated(false);
-                    SecurityContextHolder.clearContext();
-                    SecurityContextHolder.getContext().setAuthentication(null);
-                    SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
-                    HttpSession session = request.getSession(false);
-                    if (session != null) {
-                        session.invalidate();
-                    }
                     try {
-                        request.getSession().invalidate();
-                        request.logout();
-                    } catch (ServletException e) {
-                        throw new RuntimeException(e);
+                        final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+                        SecurityContextHolder.getContext().setAuthentication(null);
+                        authentication.getAuthorities().removeAll(authorities);
+                    } catch (NullPointerException e) {
+                        // It still throws UnsupportedOperationException (understandably),
+                        // but it needs to be there to work. Why?
                     }
                 })
-                .deleteCookies().invalidateHttpSession(true)
                 .and()
-                 */
-                /*
-                .logout()
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/web/").deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .addLogoutHandler(new HeaderWriterLogoutHandler(
-                        new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL)))
-                .and()
-                 */
                 .build();
     }
 
