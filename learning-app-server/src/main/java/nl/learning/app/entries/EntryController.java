@@ -12,9 +12,9 @@ import java.util.Optional;
 @Slf4j
 public class EntryController {
   private static final String PATH_LIST = "/";
-  private static final String PATH_BY_ID = "/{entryId}";
+  private static final String PATH_BY_ID = "/{id}";
   private static final String PATH_SAVE = "/";
-  private static final String PATH_DELETE = "/{entryId}";
+  private static final String PATH_DELETE = "/{id}";
 
   @Autowired
   private EntryRepository repository;
@@ -28,7 +28,7 @@ public class EntryController {
 
   @GetMapping(path = PATH_BY_ID)
   public @ResponseBody
-  Optional<Entry> getOne(final Long id) {
+  Optional<Entry> getOne(@PathVariable  final Long id) {
     log.debug("getOne: id={}", id);
     return repository.findById(id);
   }
@@ -42,7 +42,7 @@ public class EntryController {
 
   @DeleteMapping(path = PATH_DELETE)
   public @ResponseBody
-  void delete(final Long id) {
+  void delete(@PathVariable final Long id) {
     log.debug("delete: id={}", id);
     final Optional<Entry> entry = repository.findById(id);
     entry.ifPresent(value -> repository.delete(value));
