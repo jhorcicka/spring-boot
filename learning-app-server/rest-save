@@ -1,0 +1,8 @@
+#!/bin/bash 
+
+header="Content-Type: application/json"
+data='{"subject": "s1", "date": "2024-11-10", "time": "10:05", "notes": "my notes...", "todo": "finalize it. " }'
+url="http://localhost:8080/entries/"
+
+curl --insecure -H "$header" --data "$data" -X POST "$url" 2>/dev/null
+
