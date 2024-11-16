@@ -20,6 +20,6 @@ public class Entry {
   private String subject;
   private String date;
   private String time;
-  private String notes;
+  private String learned;
   private String todo;
 }
